@@ -65,7 +65,7 @@ def _impl(ctx):
     # configure stamping), we enable stamping.
     if ctx.attr.stamp:
         print("Attr 'stamp' is deprecated; it is now automatically inferred. Please remove it from %s" % ctx.label)
-    stamp = "{" in tag or "{" in registry or "{" in repository
+    stamp = (not ctx.file.tag_file) and ("{" in tag or "{" in registry or "{" in repository)
     stamp_inputs = [ctx.info_file, ctx.version_file] if stamp else []
     for f in stamp_inputs:
         pusher_args += ["-stamp-info-file", "%s" % _get_runfile_path(ctx, f)]
